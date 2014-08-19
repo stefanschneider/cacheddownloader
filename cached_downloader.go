@@ -112,10 +112,12 @@ func (c *cachedDownloader) fetchCachedFile(url *url.URL, cacheKey string) (io.Re
 			c.removeCacheEntryFor(cacheKey)
 			path = tempFileName
 		} else {
-			c.setCachingInfoForCacheKey(cacheKey, cachingInfo)
-
 			//make room for the file and move it in (if possible)
 			path = c.moveFileIntoCache(cacheKey, tempFileName, size)
+
+			if path != tempFileName {
+				c.setCachingInfoForCacheKey(cacheKey, cachingInfo)
+			}
 		}
 	}
 
